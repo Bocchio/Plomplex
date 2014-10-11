@@ -1,9 +1,12 @@
 var fs = require("fs");
 var path = require("path");
 var express = require("express");
-var less_middleware = require("less-middleware");
+var app = express(); // added
+app.listen(3000); // added
+//var less_middleware = require("less-middleware");
+var lessMiddleware = require('less-middleware'); // added
 var merge_js = require("merge-js");
-var app = express.createServer();
+//var app = express.createServer();
 
 var production = true;
 var compress = {
@@ -11,6 +14,13 @@ var compress = {
   css:  production || true,
   js:   production || false
 };
+
+app.use(lessMiddleware(path.join(__dirname, '/css', 'less'), {
+  dest: path.join(__dirname, '/gen'),
+  compress: compress.css,
+  once: production,
+  debug: !production
+}));  // added
 
 var relPath = (function() {
   var pathStart = __dirname + path.sep;
@@ -58,6 +68,7 @@ app.set("view options", {
   pretty: !compress.html
 });
 
+/*
 app.use(less_middleware({
   src: relPath("/css"),
   dest: relPath("/gen"),
@@ -65,6 +76,7 @@ app.use(less_middleware({
   once: production,
   debug: !production
 }));
+*/
 
 app.use(merge_js.middleware({
   src: relPath("/js"),
@@ -77,6 +89,7 @@ app.use(merge_js.middleware({
 app.use(express.static(relPath("/public")));
 app.use(express.static(relPath("/gen")));
 
-app.on("listening", function() {
+/*app.on("listening", function() {
   console.log("app started");
 }).listen(process.env["app_port"] || 3000);
+*/

@@ -9,9 +9,19 @@ mixin ranges(axis, defaultValue)
     td
       label(data-for=".#{axis} .min") #{axis}:
     td
+    <!-- Previous version without a ,
       div
         | [
         input.min(type="text", value="#{defaultValue || ""}", autocomplete="off",
+          spellcheck="false", data-key="#{axis}Min")
+        | ,
+        input.max(type="text", value="", autocomplete="off",
+          spellcheck="false", data-key="#{axis}Max")
+        | ]
+    -->
+      div
+        | [
+        input.min(type="text", value="#{defaultValue || ","}", autocomplete="off",
           spellcheck="false", data-key="#{axis}Min")
         | ,
         input.max(type="text", value="", autocomplete="off",
