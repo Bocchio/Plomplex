@@ -1,10 +1,10 @@
 {
   "appName": {
-    "message": "Plomplex",
+    "message": "Plomplex 2",
     "description": "The name of the application"
   },
   "appDescription": {
-    "message": "Complex functions plotter",
+    "message": "Domain coloring plotter for complex functions.",
     "description": "The description of the application"
   }
 }

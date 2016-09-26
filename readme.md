@@ -12,7 +12,7 @@ Domain coloring plotter for complex functions
 
 Installing
 ----------
-This is the source repository for the browser extension.
+This is the source repository for the [browser extension][1].
 
 Overview
 --------
@@ -33,5 +33,5 @@ TODO
 ----------
 
  - Add Firefox support.
- 
-<!--[1]: https://chrome.google.com/webstore/detail/kbjlipkfgffobjpnkigjgepljhhkpphi-->
+
+[1]: https://chrome.google.com/webstore/detail/plomplex-2/ckpnhmdlhmjhgpkopjccleoegcbkjcjl
