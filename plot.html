@@ -1,0 +1,659 @@
+<!-- Hi there! For the source, please go to http://pimvdb.github.com/Plomplex-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Plomplex</title>
+        <link href="plot.css" rel="stylesheet"/>
+        <script src="scripts/jquery.min.js"></script>
+        <script src="scripts/jquery.persistForm.js"></script>
+        <script src="scripts/jquery.xVal.js"></script>
+        <script src="scripts/worker.js"></script>
+        <script src="scripts/use_strict.js"></script>
+        <script src="scripts/utils.js"></script>
+        <script src="scripts/globals.js"></script>
+        <script src="scripts/peg_parser.js"></script>
+        <script src="scripts/parser_builder.js"></script>
+        <script src="scripts/complexnumber.js"></script>
+        <script src="scripts/color.js"></script>
+        <script src="scripts/generate.js">    </script>
+        <script src="scripts/measureTextHeight.js"></script>
+        <script src="plot.js"></script>
+    </head>
+    <body>
+        <div id="mainContainer">
+            <div class="main">
+                <div class="error">
+                </div>
+                <div class="container plot">
+                    <canvas class="plot">
+                    </canvas>
+                    <div class="welcome">
+                        <h1 id="getting-started">
+                            Getting started
+                        </h1>
+
+                        <p>Type a function in the panel to the right, and then click "Plot".</p>
+                        <p>When the plot has been generated, you can pan around if it doesn't fit on the screen.</p>
+                        <p>Click "Help" for more information.</p>
+
+                        <hr/>
+
+                        <span class="fakeLink referencePlot">
+                            Generate reference plot:
+                            <code>f(z) = z</code>
+                        </span>
+
+                        <span class="pleaseWait">
+                            Please wait...
+                        </span>
+
+                        <hr/>
+
+                        <details class="whatsNew">
+                            <summary>
+                                What's new?
+                            </summary>
+                            <span class="fakeLink dismiss">Dismiss</span>
+                            <ul>
+                                <li>
+                                    Rotate the color wheel - choose an offset angle at "Argument"
+                                </li>
+                                <li>
+                                    Progress meter to see how long it will take to plot
+                                </li>
+                                <li>
+                                    Original source available <a href="http://github.com/pimvdb/Plomplex">on GitHub</a>
+                                </li>
+                                <li>
+                                    Current source also available <a href="http://github.com/Bocchio/Plomplex">on GitHub</a>
+                                </li>
+                                <li>
+                                    UI changes, bug fixes and refactoring behind the scenes
+                                </li>
+                            </ul>
+                        </details>
+
+                    </div>
+                </div>
+            </div>
+            <form class="plot">
+                <header>
+                    <h1 class="logo">
+                        Plomplex
+                    </h1>
+                    <div class="version">
+                        v1.4
+                    </div>
+                    <span class="fakeLink help">
+                        Help
+                    </span>
+                    <div class="busy">
+                        <progress>
+                        </progress>
+                        <span>
+                            Busy...
+                        </span>
+                        <span class="fakeLink cancelPlotting">
+                            [cancel]
+                        </span>
+                    </div>
+                </header>
+                <table class="options">
+                    <tbody>
+                        <tr class="mainButtons">
+                            <td colspan="2">
+                                <div>
+                                    <input class="submit" type="submit" value="Plot"/>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="formula">
+                            <td colspan="2">
+                                <input autocomplete="off" autofocus="" class="formula" data-key="formula" placeholder="f(z) =" spellcheck="false" type="text"/>
+                            </td>
+                        </tr>
+                        <tr class="iterations">
+                            <td>
+                                <label class="help" data-for=".iterations" title="Substitute z with f(z) this many times.
+Warning: many iterations can take long to plot.">
+Iterations:
+                                </label>
+                            </td>
+                            <td>
+                                <input autocomplete="off" class="iterations" data-key="iterations" max="1000" min="1" type="number" value="1"/>
+                            </td>
+                        </tr>
+                        <tr class="size">
+                            <td>
+                                <label data-for=".width">
+                                    Size:
+                                </label>
+                            </td>
+                            <td>
+                                <div>
+                                    <input autocomplete="off" class="width" data-key="width" min="1" step="1" type="number" value="1000"/>
+                                    <div class="timesCharacter">
+                                        by
+                                    </div>
+                                    <input autocomplete="off" class="height" data-key="height" min="1" step="1" type="number" value="1000"/>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="quality">
+                            <td>
+                                <label class="help" data-for=".quality" title="Lower quality means a smaller image is generated, which is then stretched.">
+                                    Quality:
+                                </label>
+                            </td>
+                            <td>
+                                <input autocomplete="off" class="quality" data-key="quality" max="1" min="0" step="0.01" type="range" value="0.5"/>
+                            </td>
+                        </tr>
+                        <tr class="gridLines">
+                            <td>
+                                <label>
+                                    Grid lines:
+                                </label>
+                            </td>
+                            <td>
+                                <label>
+                                    <input checked="" class="gridLines" data-key="gridLines" type="checkbox"/>
+                                    every
+                                    <input autocomplete="off" class="gridLinesWidth" data-key="gridLinesWidth" spellcheck="false" type="text" value="1"/>
+                                    units
+                                </label>
+                                <br/>
+                                <label>
+                                    <input checked="" class="gridAxes" data-key="gridAxes" type="checkbox"/>
+                                    bolder axes
+                                </label>
+                                <br/>
+                                <label>
+                                    <input class="gridLabels" data-key="gridLabels" type="checkbox"/>
+                                    number labels on axes
+                                </label>
+                            </td>
+                        </tr>
+                        <tr class="argument">
+                            <td>
+                                <label data-for=".argument">
+                                    Argument:
+                                </label>
+                            </td>
+                            <td>
+                                <input autocomplete="off" class="argument" data-key="argument" max="6.28" min="0" step="0.01" type="range" value="0"/>
+                            </td>
+                        </tr>
+                        <tr class="modulus">
+                            <td>
+                                <label>
+                                    Modulus:
+                                </label>
+                            </td>
+                            <td>
+                                <label>
+                                    <input data-key="modulusTypeNone" name="modulusType" type="radio" value="none"/>
+                                    Don't draw
+                                </label>
+                                <label>
+                                    <input checked="" data-key="modulusTypeContourLines" name="modulusType" type="radio" value="contourLines"/>
+                                    Contour lines
+                                </label>
+                                <label>
+                                    <input data-key="modulusTypeLuminance" name="modulusType" type="radio" value="luminance"/>
+                                    Luminance
+                                    <div class="luminance container">
+                                        <span class="fakeLink toggleLink">
+                                            [luminance formula]
+                                        </span>
+                                        <br/>
+                                        <input class="luminanceFormula" data-key="luminanceFormula" placeholder="luminance(x) =" type="text"/>
+                                    </div>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr class="enableProgress">
+                            <td>
+                                <label data-for="input.enableProgress">
+                                    Progress:
+                                </label>
+                            </td>
+                            <td>
+                                <label>
+                                    <input class="enableProgress" data-key="enableProgress" type="checkbox"/>
+                                    Enable progress meter
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <label class="help" title="Not specifying ranges will set them automatically for a centered/square plot.">
+                                    Ranges
+                                </label>
+                            </td>
+                        </tr>
+                        <tr class="ranges re">
+                            <td>
+                                <label data-for=".re .min">
+                                    re:
+                                </label>
+                            </td>
+                            <td>
+                                <div>
+                                    <input autocomplete="off" class="min" data-key="reMin" spellcheck="false" type="text" value="-5"/>
+                                    <input autocomplete="off" class="max" data-key="reMax" spellcheck="false" type="text" value="5"/>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="ranges im">
+                            <td>
+                                <label data-for=".im .min">
+                                    im:
+                                </label>
+                            </td>
+                            <td>
+                                <div>
+                                    <input autocomplete="off" class="min" data-key="imMin" spellcheck="false" type="text" value="-5"/>
+                                    <input autocomplete="off" class="max" data-key="imMax" spellcheck="false" type="text" value="5"/>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+        <div class="help container">
+            <div class="help overlay">
+                <header>
+                    Help
+                </header>
+                <input class="close" type="button" value="Close"/>
+                <div class="help content">
+                    <details>
+                        <summary>
+                            Thanks for using Plomplex!
+                        </summary>
+                        <p>
+                            By using Plomplex you are pushing the web forward. Plomplex makes use
+of some of Google Chrome's new features:
+                        </p>
+                        <ul>
+                            <li>
+                                Canvas
+                            </li>
+                            <li>
+                                Web Workers
+                            </li>
+                            <li>
+                                Filesystem API
+                            </li>
+                            <li>
+                                New elements, such as new input types, a progress bar and
+                                <code>
+                                    &lt;details&gt;
+                                </code>
+                            </li>
+                            <li>
+                                New CSS features, such as
+                                <code>
+                                    -webkit-flex
+                                </code>
+                            </li>
+                            <li>
+                                Fast plotting thanks to V8
+                            </li>
+                        </ul>
+                        <p>
+                            Credits:
+                        </p>
+                        <ul>
+                            <li>
+                                Nodester - for hosting this application
+                            </li>
+                            <li>
+                                PEG.js - used by the formula parser
+                            </li>
+                        </ul>
+                    </details>
+                    <details>
+                        <summary>
+                            Composing a function
+                        </summary>
+                        <p>
+                            <code>
+                                z
+                            </code>
+                            is the variable to use; the function is defined as
+                            <code>
+                                f(z)
+                            </code>
+                            . You can use operators, functions and constants,
+as well as complex numbers such as
+                            <code>
+                                2i
+                            </code>
+                            . Furthermore,
+it's possible to use multiplication as in
+                            <code>
+                                (z-1)(z+i)
+                            </code>
+                            where the
+                            <code>
+                                *
+                            </code>
+                            has been eliminated.
+                        </p>
+                        <hr/>
+                        <p>
+                            The following operators are available:
+                        </p>
+                        <p>
+                            <code>
+                                + - * / ^ &lt; &gt; &lt;= &gt;= == != &amp;&amp; ||
+                            </code>
+                        </p>
+                        <hr/>
+                        <p>
+                            The following functions are available.
+                        </p>
+                        <p>
+                            Multivalued functions have an optional last argument indicating
+the branch, where
+                            <code>
+                                0
+                            </code>
+                            is the principal branch.
+                        </p>
+                        <p>
+                            Arc functions can also be accessed with e.g.
+                            <code>
+                                arcsin
+                            </code>
+                            instead of
+                            <code>
+                                asin
+                            </code>
+                            .
+                        </p>
+                        <ul>
+                            <li>
+                                <code>
+                                    ln sqrt
+                                </code>
+                            </li>
+                            <li>
+                                <code>
+                                    sin cos tan asin acos atan
+                                </code>
+                            </li>
+                            <li>
+                                <code>
+                                    csc sec cot acsc asec acot
+                                </code>
+                            </li>
+                            <li>
+                                <code>
+                                    sinh cosh tanh asinh acosh atanh
+                                </code>
+                            </li>
+                            <li>
+                                <code>
+                                    csch sech coth acsch asech acoth
+                                </code>
+                            </li>
+                            <li>
+                                <code>
+                                    atan2
+                                </code>
+                            </li>
+                            <li>
+                                <code>
+                                    sum product
+                                </code>
+                            </li>
+                            <li>
+                                <code>
+                                    if
+                                </code>
+                            </li>
+                            <li>
+                                <code>
+                                    conj re im arg modulus
+                                </code>
+                                (also
+                                <code>
+                                    |
+                                </code>
+                                )
+                            </li>
+                            <li>
+                                <code>
+                                    fact ceil floor round
+                                </code>
+                                (only for real numbers)
+                            </li>
+                        </ul>
+                        <hr/>
+                        <p>
+                            The following constants are available:
+                        </p>
+                        <p>
+                            <code>
+                                pi e
+                            </code>
+                        </p>
+                    </details>
+                    <details class="exampleFunctions">
+                        <summary>
+                            Example functions
+                        </summary>
+                        <li data-func='{"func":"(z^3 - z) / (z + i)","reMin":-3}'>
+                            <a href="#">
+                                (z^3 - z) / (z + i)
+                            </a>
+                        </li>
+                        <li data-func='{"func":"(z^2 - i) / (z^2 - 1)","reMin":-2}'>
+                            <a href="#">
+                                (z^2 - i) / (z^2 - 1)
+                            </a>
+                        </li>
+                        <li data-func='{"func":"if( re(z) &lt; 0, z^2, z )","reMin":-5}'>
+                            <a href="#">
+                                if( re(z) &lt; 0, z^2, z )
+                            </a>
+                        </li>
+                        <li data-func='{"func":"(z + 1) / (z - 1)","reMin":-3}'>
+                            <a href="#">
+                                (z + 1) / (z - 1)
+                            </a>
+                        </li>
+                        <li data-func='{"func":"e ^ (1 / z)","reMin":-0.5}'>
+                            <a href="#">
+                                e ^ (1 / z)
+                            </a>
+                        </li>
+                        <li data-func='{"func":"z^2 - 1","iterations":5,"reMin":-2}'>
+                            <a href="#">
+                                z^2 - 1
+                            </a>
+                            <span>
+                                (5 iterations)
+                            </span>
+                        </li>
+                        <li data-func='{"func":"cot(z) + i*sin(z)","iterations":2,"reMin":-5}'>
+                            <a href="#">
+                                cot(z) + i*sin(z)
+                            </a>
+                            <span>
+                                (2 iterations)
+                            </span>
+                        </li>
+                        <li data-func='{"func":"(sinh(z) + sin(z)) / 2","iterations":2,"reMin":-4}'>
+                            <a href="#">
+                                (sinh(z) + sin(z)) / 2
+                            </a>
+                            <span>
+                                (2 iterations)
+                            </span>
+                        </li>
+                        <li data-func='{"func":"sum(k^-z, k, 0, 5)","reMin":-15}'>
+                            <a href="#">
+                                sum(k^-z, k, 0, 5)
+                            </a>
+                        </li>
+                    </details>
+                    <details>
+                        <summary>
+                            What's in a plot?
+                        </summary>
+                        <p>
+                            A domain coloring plot is an attempt to visualize the four
+dimensions of a complex function: two input two output dimensions
+(a real and an imaginary part).
+                        </p>
+                        <p>
+                            The plot rectangle is the complex "input" plane. Each point in the
+plane has a specific color that represents the complex number
+                            <code>
+                                f(z)
+                            </code>
+                            . The color consists of two parts, representing
+the modulus and argument of the complex number. As for the argument,
+the hue of the color is representative. As for the modulus, there
+are two methods (see the next article).
+                        </p>
+                        <p>
+                            To see how a complex number is represented as a color, plot the
+function
+                            <code>
+                                f(z) = z
+                            </code>
+                            . This is the reference function,
+which gives back
+                            <code>
+                                z
+                            </code>
+                            unmodified, enabling you to
+directly see what color a complex number has.
+                        </p>
+                    </details>
+                    <details>
+                        <summary>
+                            Contour lines vs luminance
+                        </summary>
+                        <p>
+                            These are two means of modulus representation.
+                        </p>
+                        <p>
+                            <em>
+                                Contour lines
+                            </em>
+                            means white and black smooth lines are drawn
+to express the modulus of complex numbers. White lines are painted
+where the modulus is a power of
+                            <code>
+                                e
+                            </code>
+                            , whereas black lines
+are painted at averages of powers of
+                            <code>
+                                e
+                            </code>
+                            . Contour lines
+make it easier to more precisely see how large the modulus is than
+luminance allows.
+                        </p>
+                        <p>
+                            <em>
+                                Luminance
+                            </em>
+                            means that the modulus is expressed as a
+continuously increasing lightness, from black (
+                            <code>
+                                0
+                            </code>
+                            ) to
+white (infinity). Therefore, luminance makes it relatively easy to
+tell where zeroes are and where poles are.
+                        </p>
+                        <p>
+                            The luminance formula defines how different moduli are mapped to
+lightness. The function should take any modulus
+                            <code>
+                                x &gt;= 0
+                            </code>
+                            and evaluate to a value
+                            <code>
+                                0 &lt;= luminance &lt;= 1
+                            </code>
+                            .
+                        </p>
+                    </details>
+                    <details>
+                        <summary>
+                            Argument
+                        </summary>
+                        <p>
+                            The "Argument" option defines the offset angle at which the input color
+wheel is used. The default is
+                            <code>
+                                0
+                            </code>
+                            , which has e.g. red to the right and cyan
+to the left. By setting this value to
+                            <code>
+                                3.14
+                            </code>
+                            (which is approximately pi),
+the color wheel is rotated 3.14 radians. As a result, red will be to the
+left and cyan to the right.
+                        </p>
+                        <p>
+                            To see how the color wheel exactly rotates, plot the function
+                            <code>
+                                f(z) = z
+                            </code>
+                            - this function shows you the color wheel directly since the
+input is not modified in any way.
+                        </p>
+                    </details>
+                    <details>
+                        <summary>
+                            How to copy/save
+                        </summary>
+                        <p>
+                            After the plot has been generated, right click it and hit the "save as" option.
+                        </p>
+                    </details>
+                    <details class="faq">
+                        <summary>
+                            FAQ
+                        </summary>
+                        <ul>
+                            <li>
+                                Some parts of the image get black or are destroyed.
+                            </li>
+                            <li>
+                                This is probably caused by precision errors. Plomplex does not
+use infinite precision when calculating. When the value of a point
+gets too large or too small, the generated color of that point has
+no significance. This most notably happens when iterating many
+times.
+                            </li>
+                            <li>
+                                Why is the progress meter a manual opt-in?
+                            </li>
+                            <li>
+                                Sending progress notifications is rather expensive. For
+fast plots (simple function/small size/etc), enabling progress
+notifications slows down plotting significantly. It is
+recommended to only use it for truly slow plots so as to be
+able to see how long it is going to take.
+                            </li>
+                        </ul>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

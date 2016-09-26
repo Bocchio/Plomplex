@@ -1,8 +1,15 @@
-// import("use_strict.js");
-// import("utils.js")
-// import("jquery.xVal.js")
-// import("jquery.persistForm.js")
-// import("measureTextHeight.js")
+// "use_strict.js"
+// "utils.js"
+// "jquery.xVal.js"
+// "jquery.persistForm.js"
+// "measureTextHeight.js"
+
+var production = true;
+var compress = {
+  html: production || false,
+  css:  production || true,
+  js:   production || false
+};
 
 (function() {
   var savedVersion = +localStorage["whats_new_version"] || 0;
@@ -63,7 +70,7 @@
     });
 
     var initiateWorker = function() {
-      worker = new Worker("worker.js");
+      worker = new Worker("scripts/worker.js");
 
       $(worker)
         .on("terminate", function(e) {
@@ -187,6 +194,7 @@
       // prevent toggling of checkbox (because of label)
       .on("click", preventDefault);
 
+    var version = 1.4;
     $(".whatsNew").toggle(savedVersion < version);
 
     $(".whatsNew .dismiss").on("click", function() {
@@ -350,7 +358,7 @@
         var enableProgress = $("input.enableProgress").xVal();
         $progress.toggle(enableProgress).xVal(0);
 
-        worker.webkitPostMessage({
+        worker.postMessage({
           imageData: imageData,
           enableProgress: enableProgress,
           compress: compress,
@@ -425,61 +433,6 @@
         top:  ~~top
       });
     };
-
-    $(".openImage").on("click", function() {
-      var popup = window.open("image.html");
-
-      $(popup).on("load", function() {
-        $("<h1>", {
-          text: "Please wait...",
-          css: {
-            "font": "300% sans-serif",
-            "padding-top": "50px",
-            "text-align": "center"
-          }
-        }).appendTo(this.document.body);
-      }).on("close", function() {
-        $(this).off("load");
-      });
-
-      // Trim leading "data:image/png;base64,"
-      var data = atob(cv.toDataURL("image/png").slice(22));
-
-      window.webkitRequestFileSystem(
-        window.TEMPORARY,
-        data.length,
-        function(fs) {
-          fs.root.getFile("plot.png", { create: true }, function(fileEntry) {
-            fileEntry.createWriter(function(fileWriter) {
-              if(!delete fileWriter.length) return popup.close();
-
-              var arr = new Uint8Array(data.length);
-
-              for(var i = 0; i < data.length; i++) {
-                arr[i] = data.charCodeAt(i) & 0xff;
-              }
-
-              var blob = new Blob([arr]);
-
-              $(fileWriter)
-                .on("writeend", function() {
-                  $(popup).off("load");
-                  if(popup.location) {
-                    popup.location.href = fileEntry.toURL();
-                  }
-                })
-                .on("error", function(e) {
-                  popup.close();
-                  showError(e);
-                });
-
-              fileWriter.write(blob);
-            }, showError);
-          }, showError);
-        },
-        showError
-      );
-    });
 
     var down = false, startX, startY, startLeft, startTop;
 

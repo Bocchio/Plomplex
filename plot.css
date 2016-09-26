@@ -1,0 +1,463 @@
+@import "http://fonts.googleapis.com/css?family=Short+Stack|Open+Sans";
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+q:before,
+blockquote:after,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+body {
+  line-height: 1.6;
+}
+body * {
+  box-sizing: border-box;
+}
+body,
+body summary,
+body summary * {
+  cursor: default !important;
+}
+body,
+body input {
+  font-size: 15pt;
+}
+body.busy,
+body.busy * {
+  cursor: progress !important;
+}
+body input {
+  font-family: monospace;
+  letter-spacing: -1px;
+}
+body,
+body input[type="button"],
+body input[type="submit"] {
+  font-family: "Open Sans", sans-serif;
+}
+#mainContainer {
+  display: -webkit-flex;
+  height: 100%;
+}
+#mainContainer div.main {
+  -webkit-flex: 1;
+  width: 100%;
+  height: 100%;
+  border: 1px solid gray;
+  border-bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+#mainContainer div.main div.error {
+  display: none;
+  z-index: 99;
+  background-color: red;
+  color: white;
+  font-family: monospace;
+  padding: 5px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+#mainContainer div.main div.error:before {
+  content: "Error:\a";
+  white-space: pre;
+}
+#mainContainer div.main div.welcome {
+  padding: 0 20px;
+}
+#mainContainer div.main div.welcome h1 {
+  font-size: 200%;
+  padding: 20px 0;
+}
+#mainContainer div.main div.welcome hr {
+  margin: 30px 0;
+}
+#mainContainer div.main div.welcome .pleaseWait {
+  display: none;
+  margin-left: 15px;
+}
+#mainContainer div.main div.welcome .whatsNew .dismiss {
+  margin-left: 20px;
+}
+#mainContainer div.main div.plot.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+#mainContainer form.plot {
+  width: 375px;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  font-size: 80%;
+  padding-bottom: 10px;
+}
+#mainContainer form.plot header {
+  display: -webkit-flex;
+  margin-bottom: 5px;
+  position: relative;
+  border-bottom: 1px solid gray;
+}
+#mainContainer form.plot header h1.logo {
+  padding-top: 3px;
+  margin: 0 auto 20px auto;
+  font: 30pt "Short Stack", sans-serif;
+  text-align: center;
+}
+#mainContainer form.plot header div.version {
+  position: absolute;
+  right: 7px;
+  top: 0;
+}
+#mainContainer form.plot header .fakeLink.help {
+  position: absolute;
+  right: 5px;
+  bottom: 0;
+}
+#mainContainer form.plot header div.busy {
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  height: 20px;
+  position: absolute;
+  left: 10px;
+  bottom: 2px;
+}
+#mainContainer form.plot header div.busy progress {
+  width: 150px;
+  height: 15px;
+}
+#mainContainer form.plot header div.busy span {
+  margin: 0 5px;
+}
+#mainContainer form.plot header div.busy .fakeLink {
+  cursor: pointer !important;
+}
+#mainContainer form.plot table.options {
+  width: 100%;
+}
+#mainContainer form.plot table.options td {
+  padding: 0 10px;
+}
+#mainContainer form.plot table.options tr.mainButtons div {
+  display: -webkit-flex;
+}
+#mainContainer form.plot table.options tr.mainButtons div input {
+  -webkit-flex: 1;
+  height: 50px;
+}
+#mainContainer form.plot table.options tr.formula td {
+  padding: 5px 15px;
+}
+#mainContainer form.plot table.options tr.formula td input {
+  width: 100%;
+}
+#mainContainer form.plot table.options tr.iterations input {
+  margin-left: 0;
+}
+#mainContainer form.plot table.options tr.size div {
+  display: -webkit-flex;
+  -webkit-align-items: center;
+}
+#mainContainer form.plot table.options tr.size div input {
+  -webkit-flex: 1;
+  width: 0;
+}
+#mainContainer form.plot table.options tr.size div .timesCharacter {
+  margin: 0 5px;
+}
+#mainContainer form.plot table.options tr.gridLines input.gridLinesWidth {
+  width: 100px;
+  margin: 0 5px;
+}
+#mainContainer form.plot table.options tr.modulus label {
+  display: block;
+}
+#mainContainer form.plot table.options tr.modulus div.luminance.container {
+  display: inline-block;
+  padding: 0 10px;
+  margin-bottom: 5px;
+  width: 100%;
+}
+#mainContainer form.plot table.options tr.modulus div.luminance.container input {
+  width: 100%;
+}
+#mainContainer form.plot table.options tr.ranges div {
+  display: -webkit-flex;
+  -webkit-align-items: center;
+}
+#mainContainer form.plot table.options tr.ranges div input {
+  -webkit-flex: 1;
+  width: 0;
+  margin: 0 5px;
+}
+label.help {
+  border-bottom: 1px dotted black;
+  cursor: help;
+}
+.help.container {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  padding-right: 350px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.help.container .overlay {
+  width: 80%;
+  min-width: 400px;
+  line-height: 150%;
+  margin: 50px auto 50px auto;
+  border: 1px solid black;
+  border-radius: 25px;
+  padding: 60px 40px;
+  background-color: #f0f0f0;
+  position: relative;
+}
+.help.container .overlay > header {
+  margin: -30px 0 20px 15px;
+  font-size: 145%;
+}
+.help.container .overlay .close {
+  position: absolute;
+  right: 16px;
+  top: 15px;
+}
+.help.container .overlay .content details summary {
+  display: block;
+  font-size: 125%;
+  padding: 10px;
+  margin: 0;
+  border-top: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
+  margin-top: -1px;
+  cursor: pointer !important;
+}
+.help.container .overlay .content details summary + * {
+  margin-top: 15px;
+}
+.help.container .overlay .content details.exampleFunctions li {
+  font-family: monospace;
+  margin-bottom: 10px;
+}
+.help.container .overlay .content details.exampleFunctions li,
+.help.container .overlay .content details.exampleFunctions li * {
+  cursor: pointer !important;
+}
+.help.container .overlay .content details.exampleFunctions li a {
+  text-decoration: none;
+}
+.help.container .overlay .content details.faq li {
+  list-style-type: none;
+}
+.help.container .overlay .content details.faq li:nth-child(2n + 1) {
+  margin-top: 30px;
+}
+.help.container .overlay .content details.faq li:nth-child(2n + 1):before {
+  content: "Q";
+  font-weight: bold;
+  margin-right: 10px;
+}
+.help.container .overlay .content details.faq li:nth-child(2n) {
+  margin-left: 75px;
+}
+.help.container .overlay .content details.faq li:nth-child(2n):before {
+  content: "A";
+  font-weight: bold;
+  margin-right: 10px;
+}
+.help.container .overlay .content details :last-child {
+  margin-bottom: 15px;
+}
+.help.container .overlay .content details p {
+  margin: 15px 0;
+}
+.help.container .overlay .content details > :not(summary) {
+  margin-left: 10px;
+}
+:not(input),
+input[type="range"] {
+  -webkit-user-select: none;
+}
+div.help *,
+div.welcome * {
+  -webkit-user-select: text;
+  cursor: auto;
+}
+details summary {
+  display: inline;
+  margin-bottom: 5px;
+  cursor: pointer !important;
+}
+canvas.plot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  cursor: move !important;
+}
+input[type="button"],
+input[type="submit"] {
+  letter-spacing: 1px;
+}
+code,
+pre {
+  font-family: monospace;
+}
+p {
+  margin-bottom: 20px;
+}
+em {
+  font-style: italic;
+}
+li {
+  margin-left: 30px;
+  list-style-type: disc;
+}
+a,
+.fakeLink {
+  color: blue;
+  text-decoration: underline;
+}
+a,
+.fakeLink,
+a *,
+.fakeLink * {
+  cursor: pointer !important;
+}
+div.bindRange {
+  display: -webkit-flex;
+}
+div.bindRange input[type="range"] {
+  -webkit-flex: 1;
+}
+div.bindRange input[type="text"] {
+  width: 50px;
+}

@@ -1,11 +1,5 @@
-// import("use_strict.js")
-// import("utils.js")
-// import("globals.js")
-// import("peg_parser.js")
-// import("parser_builder.js")
-// import("complexnumber.js")
-// import("color.js")
-// import("generate.js")
+
+importScripts("utils.js", "globals.js", "peg_parser.js", "parser_builder.js", "complexnumber.js", "color.js", "generate.js");
 
 self.addEventListener("message", function(e) {
   try {
@@ -32,7 +26,7 @@ self.addEventListener("message", function(e) {
           progress = processedRows++ / totalRows;
           if(progress - lastProgress > 0.05) {
             lastProgress = progress;
-            self.webkitPostMessage(progress);
+            self.postMessage(progress);
           }
         });
       })();
@@ -43,7 +37,7 @@ self.addEventListener("message", function(e) {
     res.size = obj.size;
     res.grid = obj.grid;
 
-    self.webkitPostMessage(res);
+    self.postMessage(res);
   } catch(e) {
     self.postMessage({
       exception: {
