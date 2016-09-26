@@ -157,11 +157,11 @@ body input[type="submit"] {
   font-family: "Open Sans", sans-serif;
 }
 #mainContainer {
-  display: -webkit-flex;
+  display: flex;
   height: 100%;
 }
 #mainContainer div.main {
-  -webkit-flex: 1;
+  flex: 1;
   width: 100%;
   height: 100%;
   border: 1px solid gray;
@@ -217,7 +217,7 @@ body input[type="submit"] {
   padding-bottom: 10px;
 }
 #mainContainer form.plot header {
-  display: -webkit-flex;
+  display: flex;
   margin-bottom: 5px;
   position: relative;
   border-bottom: 1px solid gray;
@@ -239,8 +239,8 @@ body input[type="submit"] {
   bottom: 0;
 }
 #mainContainer form.plot header div.busy {
-  display: -webkit-flex;
-  -webkit-align-items: center;
+  display: flex;
+  align-items: center;
   height: 20px;
   position: absolute;
   left: 10px;
@@ -263,10 +263,10 @@ body input[type="submit"] {
   padding: 0 10px;
 }
 #mainContainer form.plot table.options tr.mainButtons div {
-  display: -webkit-flex;
+  display: flex;
 }
 #mainContainer form.plot table.options tr.mainButtons div input {
-  -webkit-flex: 1;
+  flex: 1;
   height: 50px;
 }
 #mainContainer form.plot table.options tr.formula td {
@@ -279,11 +279,11 @@ body input[type="submit"] {
   margin-left: 0;
 }
 #mainContainer form.plot table.options tr.size div {
-  display: -webkit-flex;
-  -webkit-align-items: center;
+  display: flex;
+  align-items: center;
 }
 #mainContainer form.plot table.options tr.size div input {
-  -webkit-flex: 1;
+  flex: 1;
   width: 0;
 }
 #mainContainer form.plot table.options tr.size div .timesCharacter {
@@ -306,11 +306,11 @@ body input[type="submit"] {
   width: 100%;
 }
 #mainContainer form.plot table.options tr.ranges div {
-  display: -webkit-flex;
-  -webkit-align-items: center;
+  display: flex;
+  align-items: center;
 }
 #mainContainer form.plot table.options tr.ranges div input {
-  -webkit-flex: 1;
+  flex: 1;
   width: 0;
   margin: 0 5px;
 }
@@ -403,11 +403,11 @@ label.help {
 }
 :not(input),
 input[type="range"] {
-  -webkit-user-select: none;
+  user-select: none;
 }
 div.help *,
 div.welcome * {
-  -webkit-user-select: text;
+  user-select: text;
   cursor: auto;
 }
 details summary {
@@ -453,10 +453,10 @@ a *,
   cursor: pointer !important;
 }
 div.bindRange {
-  display: -webkit-flex;
+  display: flex;
 }
 div.bindRange input[type="range"] {
-  -webkit-flex: 1;
+  flex: 1;
 }
 div.bindRange input[type="text"] {
   width: 50px;
